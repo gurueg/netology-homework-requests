@@ -4,18 +4,20 @@ from pprint import pprint
 
 
 def main():
-    now = datetime.datetime.now()
-    two_days_delta = datetime.timedelta(days=2)
-    two_days_ago = now - two_days_delta
+    # Проверок на правильность ввода не делаем((
+    tags = input('Введите теги через запятую: ').split(',')
+    days_count = int(input('Введите количество дней, за которые показать вопросы: '))
 
-    print(now.timestamp())
+    now = datetime.datetime.now()
+    two_days_delta = datetime.timedelta(days=days_count)
+    two_days_ago = now - two_days_delta
 
     answer = requests.get(
         'https://api.stackexchange.com/2.2/questions',
         params={
             'fromdate': str(two_days_ago.timestamp()).split('.')[0],
             'todate': str(now.timestamp()).split('.')[0],
-            'tagged': 'python',
+            'tagged': ';'.join(tags),
             'site': 'stackoverflow',
             'sort': 'creation',
             'order': 'desc'
